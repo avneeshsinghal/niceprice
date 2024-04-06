@@ -1,0 +1,16 @@
+server:
+  port: 8761
+  
+spring:
+  application:
+      name: niceprice
+      
+  datasource:
+    url: jdbc:mysql://localhost:3306/nicepricedb
+    username: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
