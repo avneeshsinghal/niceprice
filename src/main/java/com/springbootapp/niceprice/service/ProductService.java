@@ -15,8 +15,11 @@ import com.springbootapp.niceprice.repo.ProductRepo;
 @Service
 public class ProductService {
 	
-	@Autowired
-	ProductRepo productRepo;
+	static ProductRepo productRepo;
+	
+	ProductService(ProductRepo productRepo){
+		ProductService.productRepo  = productRepo;
+	}
 
 	public List<ProductDTO> fetchAllProducts() {
 		
@@ -33,6 +36,32 @@ public class ProductService {
 	        throw new ProductAlreadyExistsException("Product already exists with the given Product ID.");
 	    }
         return ProductMapper.INSTANCE.mapProducttoProductDTO(productRepo.save(addedProduct));
+	}
+	
+	public static ProductDTO fetchProductById(String productId) {
+
+		Product checkedProduct = productRepo.findFirstByProductId(productId).orElse(null);
+		
+		if(checkedProduct == null){
+	        throw new ProductAlreadyExistsException("Product does not exists with the given Product ID.");
+	    }
+        return ProductMapper.INSTANCE.mapProducttoProductDTO(checkedProduct);
+	}
+	
+	public List<ProductDTO> createBulkProducts(List<ProductDTO> productDTOList){
+		
+//		Product addedProduct = ProductMapper.INSTANCE.mapProductDTOtoProduct(productDTOList);
+//		Product checkedProduct = productRepo.findFirstByProductId(addedProduct.getProductId()).orElse(null);
+//		Stream productStream = productDTOList.stream().map(ProductMapper.INSTANCE::mapProductDTOtoProduct);
+//		Long repeatingCount = .filter(product->productRepo.existsByProductId(product.getProductId())).count();
+		
+		
+//		if(checkedProduct != null){
+//	        throw new ProductAlreadyExistsException("Product already exists with the given Product ID.");
+//	    }
+		List<Product> productList = productDTOList.stream().map(ProductMapper.INSTANCE::mapProductDTOtoProduct).collect(Collectors.toList());
+		
+        return productRepo.saveAll(productList).stream().map(ProductMapper.INSTANCE::mapProducttoProductDTO).collect(Collectors.toList());
 	}
 
 

@@ -13,7 +13,7 @@ public interface  UserMapper {
 	
 	UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 	
-	User mapProductDTOtoProduct(UserDTO userDTO);
+	User mapUserDTOtoUser(UserDTO userDTO);
 	
-	UserDTO mapProducttoProductDTO(User user);
+	UserDTO mapUsertoUserDTO(User user);
 }
